@@ -6,6 +6,7 @@ import android.app.Application;
 import com.facebook.stetho.Stetho;
 import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 
+import dmanlancers.com.flightplanner.managers.RealmManager;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
@@ -16,6 +17,7 @@ public class FlightPlannerApplication extends Application {
         super.onCreate();
         initStetho();
         initRealm();
+        //initData();
     }
 
     private void initStetho() {
@@ -34,5 +36,12 @@ public class FlightPlannerApplication extends Application {
                 .build();
 
         Realm.setDefaultConfiguration(realmConfiguration);
+    }
+
+    private void initData() {
+        //Example to create all the necessary tables
+        RealmManager realmManager = new RealmManager();
+        realmManager.createAirportCodeTable();
+        realmManager.getAllMessageType();
     }
 }
