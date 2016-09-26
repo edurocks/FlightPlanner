@@ -1,6 +1,7 @@
 package dmanlancers.com.flightplanner.managers;
 
 import dmanlancers.com.flightplanner.model.AirportCode;
+import dmanlancers.com.flightplanner.model.Login;
 import dmanlancers.com.flightplanner.model.MessageType;
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -11,14 +12,6 @@ public class RealmManager {
 
     public RealmManager() {
         mRealm = Realm.getDefaultInstance();
-    }
-
-    public RealmResults<AirportCode> getAllAirportCode() {
-        return mRealm.where(AirportCode.class).findAll();
-    }
-
-    public RealmResults<MessageType> getAllMessageType() {
-        return mRealm.where(MessageType.class).findAll();
     }
 
     //Example Names
@@ -50,7 +43,25 @@ public class RealmManager {
         mRealm.commitTransaction();
     }
 
+    public void doLogin(int id, String username, String password) {
+        Login login = mRealm.createObject(Login.class);
+        login.setId(id);
+        login.setUsername(username);
+        login.setPassword(password);
+        mRealm.copyToRealm(login);
+        mRealm.commitTransaction();
+
+    }
+
     public Realm getRealm() {
         return mRealm;
+    }
+
+    public RealmResults<AirportCode> getAllAirportCode() {
+        return mRealm.where(AirportCode.class).findAll();
+    }
+
+    public RealmResults<MessageType> getAllMessageType() {
+        return mRealm.where(MessageType.class).findAll();
     }
 }
