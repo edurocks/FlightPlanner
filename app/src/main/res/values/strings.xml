@@ -6,5 +6,7 @@
     <string name="destination_airport_code">Destination Airport Code</string>
     <string name="time">Time</string>
     <string name="date">Date</string>
-
+    <string name="send_email">Send Email</string>
+    <string name="send_email_chooser">Send Email</string>
+    <string name="email_template">(%s)</string>
 </resources>

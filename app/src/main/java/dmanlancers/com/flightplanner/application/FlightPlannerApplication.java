@@ -42,6 +42,6 @@ public class FlightPlannerApplication extends Application {
         //Example to create all the necessary tables
         RealmManager realmManager = new RealmManager();
         realmManager.createAirportCodeTable();
-        realmManager.getAllMessageType();
+        realmManager.createMessageTypeTable();
     }
 }
