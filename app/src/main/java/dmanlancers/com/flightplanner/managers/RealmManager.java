@@ -20,12 +20,12 @@ public class RealmManager {
         AirportCode airportCode = mRealm.createObject(AirportCode.class);
         airportCode.setId(1);
         airportCode.setAirportCode("FAB");
-        mRealm.copyToRealm(airportCode);
+        mRealm.copyToRealmOrUpdate(airportCode);
 
         AirportCode airportCode1 = mRealm.createObject(AirportCode.class);
         airportCode1.setId(2);
         airportCode1.setAirportCode("FOB");
-        mRealm.copyToRealm(airportCode1);
+        mRealm.copyToRealmOrUpdate(airportCode1);
         mRealm.commitTransaction();
     }
 
@@ -34,12 +34,12 @@ public class RealmManager {
         MessageType messageType = mRealm.createObject(MessageType.class);
         messageType.setId(1);
         messageType.setMessageType("DEL");
-        mRealm.copyToRealm(messageType);
+        mRealm.copyToRealmOrUpdate(messageType);
 
         MessageType messageType1 = mRealm.createObject(MessageType.class);
         messageType1.setId(2);
         messageType1.setMessageType("CAT");
-        mRealm.copyToRealm(messageType1);
+        mRealm.copyToRealmOrUpdate(messageType1);
         mRealm.commitTransaction();
     }
 

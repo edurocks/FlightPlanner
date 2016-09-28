@@ -3,6 +3,7 @@ package dmanlancers.com.flightplanner.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +42,7 @@ public class FlightPlannerFragment extends Fragment implements AdapterView.OnIte
     private String mDestinationAirportValue;
     private AppCompatEditText mFlightCode;
     private String mDestinationEmail;
+    private LinearLayout mFlightPlanLayout;
 
     public FlightPlannerFragment() {
         realmManager = new RealmManager();
@@ -62,6 +65,7 @@ public class FlightPlannerFragment extends Fragment implements AdapterView.OnIte
         mDestinationAirport = (AppCompatSpinner) view.findViewById(R.id.destination_airport_code);
         mFlightCode = (AppCompatEditText) view.findViewById(R.id.flight_code);
         AppCompatButton mSendEmail = (AppCompatButton) view.findViewById(R.id.send_email);
+        mFlightPlanLayout = (LinearLayout) view.findViewById(R.id.flight_plan_layout);
         mMessageType.setOnItemSelectedListener(this);
         mOriginAirport.setOnItemSelectedListener(this);
         mDestinationAirport.setOnItemSelectedListener(this);
@@ -139,8 +143,15 @@ public class FlightPlannerFragment extends Fragment implements AdapterView.OnIte
 
     @Override
     public void onClick(View view) {
-        Utils.sendEmail(getActivity(), mDestinationEmail, "Flight Planner",
-                String.format(getResources().getString(R.string.email_template), mMessageTypeSelectedValue));
+        if (!Utils.validateFlightCode(mFlightCode)) {
+            Utils.sendEmail(getActivity(), mDestinationEmail, getString(R.string.email_subject),
+                    String.format(getResources().getString(R.string.email_template),
+                            mMessageTypeSelectedValue, mFlightCode.getText().toString().toUpperCase()
+                            , mOriginAirportValue + mCurrentTime.getText().toString(), mDestinationAirportValue
+                            , mCurrentDate.getText().toString()));
+        } else {
+            Snackbar.make(mFlightPlanLayout, R.string.flight_code_error_message, Snackbar.LENGTH_SHORT).show();
+        }
     }
 
     private void selectDestinationEmail(int pos) {

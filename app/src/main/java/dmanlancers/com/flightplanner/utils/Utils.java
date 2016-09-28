@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v7.widget.AppCompatEditText;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
@@ -37,5 +38,9 @@ public class Utils {
         } catch (ActivityNotFoundException e) {
             Log.e("Error", "Sem programa para instalar o email.");
         }
+    }
+
+    public static boolean validateFlightCode(AppCompatEditText appCompatEditText) {
+        return appCompatEditText.getText().toString().isEmpty();
     }
 }
