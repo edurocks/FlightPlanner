@@ -17,7 +17,7 @@ public class FlightPlannerApplication extends Application {
         super.onCreate();
         initStetho();
         initRealm();
-        //initData();
+        initData();
     }
 
     private void initStetho() {
@@ -41,7 +41,9 @@ public class FlightPlannerApplication extends Application {
     private void initData() {
         //Example to create all the necessary tables
         RealmManager realmManager = new RealmManager();
-        realmManager.createAirportCodeTable();
-        realmManager.getAllMessageType();
+        if (realmManager.getAllMessageType().size() == 0 && realmManager.getAllAirportCode().size() == 0) {
+            realmManager.createAirportCodeTable();
+            realmManager.createMessageTypeTable();
+        }
     }
-}
+    }
