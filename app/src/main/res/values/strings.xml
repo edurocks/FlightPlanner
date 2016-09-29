@@ -5,5 +5,15 @@
     <string name="hint_password">Password</string>
     <string name="hint_RepeatePassword">Password did not match</string>
     <string name="btn_login">LOGIN</string>
-
+    <string name="message_type">Message Type</string>
+    <string name="flight_number">Flight Number</string>
+    <string name="origin_airport_code">Origin Airport Code</string>
+    <string name="destination_airport_code">Destination Airport Code</string>
+    <string name="time">Time</string>
+    <string name="date">Date</string>
+    <string name="send_email">Send Email</string>
+    <string name="send_email_chooser">Send Email</string>
+    <string name="email_template" formatted="false">(%s-%s-%s-%s/%s)</string>
+    <string name="email_subject">Flight Planner</string>
+    <string name="flight_code_error_message">Flight code is necessary</string>
 </resources>
