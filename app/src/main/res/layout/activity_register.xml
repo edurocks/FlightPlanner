@@ -1,0 +1,33 @@
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinatorLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="dmanlancers.com.flightplanner.activities.FlightPlanActivity">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="dmanlancers.com.flightplanner.activities.FlightPlanActivity">
+
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/fragmentRegister"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context="dmanlancers.com.flightplanner.activities.FlightPlanActivity"
+            tools:ignore="MergeRootFrame" />
+
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_register"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#000"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark" />
+
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>
