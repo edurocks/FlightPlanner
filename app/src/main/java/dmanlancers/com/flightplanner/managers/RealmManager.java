@@ -4,6 +4,7 @@ import dmanlancers.com.flightplanner.model.AirportCode;
 import dmanlancers.com.flightplanner.model.Login;
 import dmanlancers.com.flightplanner.model.MessageType;
 import io.realm.Realm;
+import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 public class RealmManager {
@@ -43,11 +44,22 @@ public class RealmManager {
         mRealm.commitTransaction();
     }
 
+    public void createUsersTable() {
+        mRealm.beginTransaction();
+        Login login = mRealm.createObject(Login.class);
+        login.setId(1);
+        login.setUsername("Paulo");
+        login.setPassword("123");
+        login.setEmail("test@dmanlancers.pt");
+        mRealm.copyToRealmOrUpdate(login);
+        mRealm.commitTransaction();
+    }
+
     public void doLogin(int id, String username, String password) {
         Login login = mRealm.createObject(Login.class);
-        login.setId(id);
-        login.setUsername(username);
-        login.setPassword(password);
+        login.setId(1);
+        login.setUsername("Paulo");
+        login.setPassword("123");
         mRealm.copyToRealm(login);
         mRealm.commitTransaction();
 
@@ -63,5 +75,13 @@ public class RealmManager {
 
     public RealmResults<MessageType> getAllMessageType() {
         return mRealm.where(MessageType.class).findAll();
+    }
+
+    public RealmResults<Login> getAllUsers() {
+        return mRealm.where(Login.class).findAll();
+    }
+
+    public RealmQuery<Login> validateUser() {
+        return mRealm.where(Login.class);
     }
 }

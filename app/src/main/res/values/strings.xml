@@ -5,6 +5,9 @@
     <string name="hint_password">Password</string>
     <string name="hint_RepeatePassword">Password did not match</string>
     <string name="btn_login">LOGIN</string>
+    <string name="err_msg_password">Please fill the password field!</string>
+    <string name="err_msg_email">Fill the email field</string>
+    <string name="msg_error_login_access">Wrong email or password.</string>
     <string name="message_type">Message Type</string>
     <string name="flight_number">Flight Number</string>
     <string name="origin_airport_code">Origin Airport Code</string>

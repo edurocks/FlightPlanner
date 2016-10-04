@@ -41,9 +41,10 @@ public class FlightPlannerApplication extends Application {
     private void initData() {
         //Example to create all the necessary tables
         RealmManager realmManager = new RealmManager();
-        if (realmManager.getAllMessageType().size() == 0 && realmManager.getAllAirportCode().size() == 0) {
+        if (realmManager.getAllMessageType().size() == 0 && realmManager.getAllAirportCode().size() == 0 && realmManager.getAllUsers().size() == 0) {
             realmManager.createAirportCodeTable();
             realmManager.createMessageTypeTable();
+            realmManager.createUsersTable();
         }
     }
     }
