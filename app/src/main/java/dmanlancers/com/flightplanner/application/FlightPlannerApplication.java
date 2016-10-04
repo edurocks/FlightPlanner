@@ -47,4 +47,4 @@ public class FlightPlannerApplication extends Application {
             realmManager.createUsersTable();
         }
     }
-    }
+}

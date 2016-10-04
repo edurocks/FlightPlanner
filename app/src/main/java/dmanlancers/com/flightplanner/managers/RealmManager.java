@@ -4,7 +4,6 @@ import dmanlancers.com.flightplanner.model.AirportCode;
 import dmanlancers.com.flightplanner.model.Login;
 import dmanlancers.com.flightplanner.model.MessageType;
 import io.realm.Realm;
-import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 public class RealmManager {
@@ -57,9 +56,9 @@ public class RealmManager {
 
     public void doLogin(int id, String username, String password) {
         Login login = mRealm.createObject(Login.class);
-        login.setId(1);
-        login.setUsername("Paulo");
-        login.setPassword("123");
+        login.setId(id);
+        login.setUsername(username);
+        login.setPassword(password);
         mRealm.copyToRealm(login);
         mRealm.commitTransaction();
 
@@ -81,7 +80,4 @@ public class RealmManager {
         return mRealm.where(Login.class).findAll();
     }
 
-    public RealmQuery<Login> validateUser() {
-        return mRealm.where(Login.class);
-    }
 }
