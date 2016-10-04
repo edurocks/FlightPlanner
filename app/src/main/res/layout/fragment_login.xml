@@ -1,25 +1,36 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize"
+    android:background="#00779f"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
         android:orientation="vertical"
         android:paddingLeft="20dp"
         android:paddingRight="20dp">
 
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="match_parent"
+        android:layout_height="127dp"
+        android:layout_marginTop="20dp"
+        app:srcCompat="@mipmap/ic_launcher" />
     <android.support.design.widget.TextInputLayout
         android:id="@+id/usernameWrapper"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textColorHint="@color/white">
 
         <android.support.v7.widget.AppCompatEditText
             android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:focusableInTouchMode="true"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:textColor="@color/white" />
+
 
     </android.support.design.widget.TextInputLayout>
 
@@ -27,7 +38,8 @@
             android:id="@+id/passwordWrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp">
+        android:layout_marginTop="4dp"
+        android:textColorHint="@color/white">
 
         <android.support.v7.widget.AppCompatEditText
                 android:id="@+id/password"
@@ -42,7 +54,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
+        android:backgroundTint="#00a2d9"
             android:text="@string/btn_login"
-            android:textColor="@android:color/white" />
+        android:textColor="@android:color/white" />
 
 </LinearLayout>
