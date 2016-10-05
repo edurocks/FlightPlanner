@@ -1,27 +1,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/flight_plan_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#00779f"
+    android:background="@color/background"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
     android:orientation="vertical"
     android:paddingLeft="20dp"
     android:paddingRight="20dp">
 
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="match_parent"
-        android:layout_height="127dp"
-        android:layout_marginTop="5dp"
-        app:srcCompat="@mipmap/ic_launcher" />
-
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/msgType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="20dp"
         android:text="@string/message_type"
         android:textColor="@color/white"
         android:textSize="15sp" />
@@ -54,10 +46,14 @@
         android:textColor="@color/white"
         android:textSize="15sp" />
 
-    <android.support.v7.widget.AppCompatSpinner
+    <android.support.v7.widget.AppCompatAutoCompleteTextView
         android:id="@+id/origin_airport_code"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:completionThreshold="1"
+        android:imeOptions="actionNext"
+        android:inputType="text"
+        android:maxLines="1" />
 
     <android.support.v7.widget.AppCompatTextView
         android:layout_width="match_parent"
@@ -66,10 +62,14 @@
         android:textColor="@color/white"
         android:textSize="15sp" />
 
-    <android.support.v7.widget.AppCompatSpinner
+    <android.support.v7.widget.AppCompatAutoCompleteTextView
         android:id="@+id/destination_airport_code"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:completionThreshold="1"
+        android:imeOptions="actionNext"
+        android:inputType="text"
+        android:maxLines="1" />
 
     <android.support.v7.widget.AppCompatTextView
         android:layout_width="match_parent"

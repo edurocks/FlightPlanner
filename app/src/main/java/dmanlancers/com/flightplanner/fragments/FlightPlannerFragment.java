@@ -5,11 +5,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.AppCompatTextView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,26 +22,28 @@ import java.util.List;
 
 import dmanlancers.com.flightplanner.R;
 import dmanlancers.com.flightplanner.activities.FlightPlanActivity;
+import dmanlancers.com.flightplanner.listeners.AutoCompleteTextViewClickListener;
 import dmanlancers.com.flightplanner.managers.RealmManager;
 import dmanlancers.com.flightplanner.model.AirportCode;
 import dmanlancers.com.flightplanner.model.MessageType;
 import dmanlancers.com.flightplanner.utils.Utils;
 import io.realm.RealmResults;
 
-public class FlightPlannerFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener {
+public class FlightPlannerFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener, AdapterView.OnItemClickListener {
 
     private RealmManager realmManager;
     private AppCompatTextView mCurrentDate;
     private AppCompatTextView mCurrentTime;
     private AppCompatSpinner mMessageType;
-    private AppCompatSpinner mOriginAirport;
-    private AppCompatSpinner mDestinationAirport;
+    private AppCompatAutoCompleteTextView mOriginAirport;
+    private AppCompatAutoCompleteTextView mDestinationAirport;
     private FlightPlanActivity mActivity;
     private String mMessageTypeSelectedValue;
     private String mOriginAirportValue;
     private String mDestinationAirportValue;
     private AppCompatEditText mFlightCode;
     private String mDestinationEmail;
+    private String mSubjectEmail;
     private LinearLayout mFlightPlanLayout;
 
     public FlightPlannerFragment() {
@@ -61,14 +63,14 @@ public class FlightPlannerFragment extends Fragment implements AdapterView.OnIte
         mCurrentDate = (AppCompatTextView) view.findViewById(R.id.date);
         mCurrentTime = (AppCompatTextView) view.findViewById(R.id.time);
         mMessageType = (AppCompatSpinner) view.findViewById(R.id.spinner_message_type);
-        mOriginAirport = (AppCompatSpinner) view.findViewById(R.id.origin_airport_code);
-        mDestinationAirport = (AppCompatSpinner) view.findViewById(R.id.destination_airport_code);
+        mOriginAirport = (AppCompatAutoCompleteTextView) view.findViewById(R.id.origin_airport_code);
+        mDestinationAirport = (AppCompatAutoCompleteTextView) view.findViewById(R.id.destination_airport_code);
         mFlightCode = (AppCompatEditText) view.findViewById(R.id.flight_code);
         AppCompatButton mSendEmail = (AppCompatButton) view.findViewById(R.id.send_email);
         mFlightPlanLayout = (LinearLayout) view.findViewById(R.id.flight_plan_layout);
         mMessageType.setOnItemSelectedListener(this);
-        mOriginAirport.setOnItemSelectedListener(this);
-        mDestinationAirport.setOnItemSelectedListener(this);
+        mOriginAirport.setOnItemClickListener(new AutoCompleteTextViewClickListener(mOriginAirport, this));
+        mDestinationAirport.setOnItemClickListener(new AutoCompleteTextViewClickListener(mDestinationAirport, this));
         mSendEmail.setOnClickListener(this);
         populateAirportCodeSpinner();
         populateMessageTypeSpinner();
@@ -104,9 +106,8 @@ public class FlightPlannerFragment extends Fragment implements AdapterView.OnIte
         }
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(mActivity,
-                android.R.layout.simple_spinner_item, airportCode);
+                android.R.layout.simple_dropdown_item_1line, airportCode);
 
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mOriginAirport.setAdapter(arrayAdapter);
         mDestinationAirport.setAdapter(arrayAdapter);
     }
@@ -118,37 +119,42 @@ public class FlightPlannerFragment extends Fragment implements AdapterView.OnIte
             case R.id.spinner_message_type:
                 mMessageTypeSelectedValue = adapterView.getItemAtPosition(pos).toString();
                 selectDestinationEmail(pos);
+                emailSubject(pos);
                 break;
-
-            case R.id.origin_airport_code:
-                mOriginAirportValue = adapterView.getItemAtPosition(pos).toString();
-                break;
-
-            case R.id.destination_airport_code:
-                mDestinationAirportValue = adapterView.getItemAtPosition(pos).toString();
-                break;
-
         }
+    }
+
+    private void emailSubject(int pos) {
+        switch (pos) {
+            case 0:
+                mSubjectEmail = getString(R.string.message_delay);
+                break;
+            case 1:
+                mSubjectEmail = getString(R.string.message_change);
+                break;
+            case 2:
+                mSubjectEmail = getString(R.string.message_request);
+                break;
+        }
+
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
     }
 
-    private void sendEmail() {
-        Log.e("template do email", "(" + mMessageTypeSelectedValue + "-" + mFlightCode.getText().toString().toUpperCase()
-                + "-" + mOriginAirportValue + mCurrentTime.getText().toString() + "-" + mDestinationAirportValue
-                + "/" + mCurrentDate.getText().toString() + ")");
-    }
-
     @Override
     public void onClick(View view) {
         if (!Utils.validateFlightCode(mFlightCode)) {
-            Utils.sendEmail(getActivity(), mDestinationEmail, getString(R.string.email_subject),
-                    String.format(getResources().getString(R.string.email_template),
-                            mMessageTypeSelectedValue, mFlightCode.getText().toString().toUpperCase()
-                            , mOriginAirportValue + mCurrentTime.getText().toString(), mDestinationAirportValue
-                            , mCurrentDate.getText().toString()));
+            if (!Utils.validateAirportCode(mOriginAirport, mDestinationAirport)) {
+                Utils.sendEmail(getActivity(), mDestinationEmail, mSubjectEmail,
+                        String.format(getResources().getString(R.string.email_template),
+                                mMessageTypeSelectedValue, mFlightCode.getText().toString().toUpperCase()
+                                , mOriginAirportValue + mCurrentTime.getText().toString(), mDestinationAirportValue
+                                , mCurrentDate.getText().toString()));
+            } else {
+                Snackbar.make(mFlightPlanLayout, R.string.airport_code_error_message, Snackbar.LENGTH_SHORT).show();
+            }
         } else {
             Snackbar.make(mFlightPlanLayout, R.string.flight_code_error_message, Snackbar.LENGTH_SHORT).show();
         }
@@ -161,6 +167,19 @@ public class FlightPlannerFragment extends Fragment implements AdapterView.OnIte
                 break;
             case 1:
                 mDestinationEmail = "celsorodrigues@sapo.pt";
+                break;
+        }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
+        switch (view.getId()) {
+            case R.id.origin_airport_code:
+                mOriginAirportValue = adapterView.getItemAtPosition(pos).toString();
+                break;
+
+            case R.id.destination_airport_code:
+                mDestinationAirportValue = adapterView.getItemAtPosition(pos).toString();
                 break;
         }
     }

@@ -22,4 +22,8 @@
     <string name="no_internet">No Internet</string>
     <string name="settings">Settings</string>
     <string name="exit">Exit</string>
+    <string name="message_delay">Delay Message</string>
+    <string name="message_change">Change Message</string>
+    <string name="message_request">Request Message</string>
+    <string name="airport_code_error_message">You have to enter the airport code</string>
 </resources>

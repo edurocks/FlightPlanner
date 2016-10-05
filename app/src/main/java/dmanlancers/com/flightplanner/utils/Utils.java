@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.support.v7.widget.AppCompatEditText;
 import android.util.Log;
 
@@ -47,6 +48,12 @@ public class Utils {
 
     public static boolean validateFlightCode(AppCompatEditText appCompatEditText) {
         return appCompatEditText.getText().toString().isEmpty();
+    }
+
+    public static boolean validateAirportCode(AppCompatAutoCompleteTextView origin, AppCompatAutoCompleteTextView destination) {
+        if (origin.getText().toString().isEmpty()) {
+            return true;
+        } else return destination.getText().toString().isEmpty();
     }
 
     public static boolean haveNetworkConnection(Context context) {
