@@ -26,4 +26,6 @@
     <string name="message_change">Change Message</string>
     <string name="message_request">Request Message</string>
     <string name="airport_code_error_message">You have to enter the airport code</string>
+    <string name="copyright">2016 Develop by Dm@nl@ncers© </string>
+    <string name="description">Because fastest flight planning is saving time and saving time is saving money...</string>
 </resources>
