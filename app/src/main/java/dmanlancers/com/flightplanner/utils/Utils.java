@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.support.v7.widget.AppCompatEditText;
 import android.util.Log;
@@ -15,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 import dmanlancers.com.flightplanner.R;
 
@@ -50,6 +52,11 @@ public class Utils {
         return appCompatEditText.getText().toString().isEmpty();
     }
 
+    public static boolean matchFlightCodePattern(AppCompatEditText appCompatEditText) {
+        Pattern pattern = Pattern.compile("[A-Z]{3}\\d{4}");
+        return pattern.matcher(appCompatEditText.getText().toString()).matches();
+    }
+
     public static boolean validateAirportCode(AppCompatAutoCompleteTextView origin, AppCompatAutoCompleteTextView destination) {
         if (origin.getText().toString().isEmpty()) {
             return true;
@@ -83,5 +90,14 @@ public class Utils {
     public static String getSharedPrefs(Context context, String key) {
         SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         return settings.getString(key, "");
+    }
+
+    public static void showDialog(Context context, String message, AlertDialog.OnClickListener listener) {
+        new AlertDialog.Builder(context)
+                .setTitle(context.getString(R.string.email_confirmation))
+                .setMessage(context.getString(R.string.body_email) + " " + message + "?")
+                .setNegativeButton(context.getString(R.string.cancel), listener)
+                .setPositiveButton(context.getString(R.string.send), listener)
+                .create().show();
     }
 }

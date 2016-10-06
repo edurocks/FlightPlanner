@@ -1,10 +1,12 @@
 package dmanlancers.com.flightplanner.fragments;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
@@ -120,6 +122,7 @@ public class FlightPlannerFragment extends Fragment implements AdapterView.OnIte
                 mMessageTypeSelectedValue = adapterView.getItemAtPosition(pos).toString();
                 selectDestinationEmail(pos);
                 emailSubject(pos);
+                mFlightCode.requestFocus();
                 break;
         }
     }
@@ -145,18 +148,35 @@ public class FlightPlannerFragment extends Fragment implements AdapterView.OnIte
 
     @Override
     public void onClick(View view) {
-        if (!Utils.validateFlightCode(mFlightCode)) {
+
+        if (Utils.matchFlightCodePattern(mFlightCode)) {
             if (!Utils.validateAirportCode(mOriginAirport, mDestinationAirport)) {
-                Utils.sendEmail(getActivity(), mDestinationEmail, mSubjectEmail,
+                Utils.showDialog(mActivity,
                         String.format(getResources().getString(R.string.email_template),
                                 mMessageTypeSelectedValue, mFlightCode.getText().toString().toUpperCase()
                                 , mOriginAirportValue + mCurrentTime.getText().toString(), mDestinationAirportValue
-                                , mCurrentDate.getText().toString()));
+                                , mCurrentDate.getText().toString()), new AlertDialog.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                switch (i) {
+                                    case DialogInterface.BUTTON_NEGATIVE:
+                                        dialogInterface.dismiss();
+                                        break;
+                                    case DialogInterface.BUTTON_POSITIVE:
+                                        Utils.sendEmail(getActivity(), mDestinationEmail, mSubjectEmail,
+                                                String.format(getResources().getString(R.string.email_template),
+                                                        mMessageTypeSelectedValue, mFlightCode.getText().toString().toUpperCase()
+                                                        , mOriginAirportValue + mCurrentTime.getText().toString(), mDestinationAirportValue
+                                                        , mCurrentDate.getText().toString()));
+                                        break;
+                                }
+                            }
+                        });
             } else {
                 Snackbar.make(mFlightPlanLayout, R.string.airport_code_error_message, Snackbar.LENGTH_SHORT).show();
             }
         } else {
-            Snackbar.make(mFlightPlanLayout, R.string.flight_code_error_message, Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(mFlightPlanLayout, R.string.flight_code_error_format, Snackbar.LENGTH_SHORT).show();
         }
     }
 
