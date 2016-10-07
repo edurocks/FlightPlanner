@@ -1,16 +1,13 @@
 package dmanlancers.com.flightplanner.fragments;
 
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.TextUtils;
@@ -19,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import dmanlancers.com.flightplanner.R;
 import dmanlancers.com.flightplanner.activities.FlightPlanActivity;
@@ -106,29 +104,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         String user = usernameWrapper.getEditText().getText().toString().trim();
         String password = passwordWrapper.getEditText().getText().toString().trim();
 
-        if (!Utils.haveNetworkConnection(getActivity())) {
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
 
-            alertDialog.setTitle(R.string.no_internet);
-
-            alertDialog.setPositiveButton(R.string.settings,
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            startActivity(new Intent(Settings.ACTION_SETTINGS));
-                        }
-                    });
-
-            alertDialog.setNegativeButton(R.string.exit,
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    });
-
-
-            alertDialog.show();
-
-        }
 
         if (submitForm()) {
 
@@ -149,7 +125,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             Snackbar snackbar = Snackbar
                     .make(loginLayout, getString(R.string.msg_error_login_access), Snackbar.LENGTH_LONG);
             View sbView = snackbar.getView();
-            sbView.setBackgroundColor(Color.RED);
+            TextView tv = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+            tv.setTextColor(Color.RED);
             snackbar.show();
         }
     }
