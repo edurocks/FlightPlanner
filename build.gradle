@@ -4,6 +4,7 @@ buildscript {
     repositories {
         jcenter()
     }
+
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.0'
         classpath "io.realm:realm-gradle-plugin:1.2.0"
@@ -20,6 +21,7 @@ allprojects {
         maven {
             url 'https://github.com/uPhyca/stetho-realm/raw/master/maven-repo'
         }
+
     }
 }
 
