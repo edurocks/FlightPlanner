@@ -3,7 +3,7 @@
     <string name="hint_name">Full Name</string>
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
-    <string name="hint_RepeatePassword">Password did not match</string>
+    <string name="hint_repeat_password">Password did not match</string>
     <string name="btn_login">LOGIN</string>
     <string name="err_msg_password">Please fill the password field!</string>
     <string name="err_msg_email">Fill the email field</string>
@@ -27,10 +27,12 @@
     <string name="message_request">Request Message</string>
     <string name="airport_code_error_message">You have to enter the airport code</string>
     <string name="copyright">2016 Develop by Dm@nl@ncers© </string>
-    <string name="description">Because fastest flight planning is saving time and saving time is saving money...</string>
+    <string name="description">Because fastest flight planning is saving time and saving time is saving money&#8230;</string>
     <string name="email_confirmation">Email Confirmation</string>
     <string name="body_email">Are you sure you want to send this message</string>
     <string name="send">Send</string>
     <string name="cancel">Cancel</string>
     <string name="flight_code_error_format">Format is Invalid</string>
+    <string name="choose_time">Choose Time:</string>
+    <string name="choose_date">Choose Date:</string>
 </resources>

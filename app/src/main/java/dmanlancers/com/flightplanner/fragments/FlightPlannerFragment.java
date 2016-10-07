@@ -45,6 +45,7 @@ public class FlightPlannerFragment extends Fragment implements AdapterView.OnIte
     private String mDestinationAirportValue;
     private AppCompatEditText mFlightCode;
     private String mDestinationEmail;
+    private String mDate;
     private String mSubjectEmail;
     private LinearLayout mFlightPlanLayout;
 
@@ -74,6 +75,8 @@ public class FlightPlannerFragment extends Fragment implements AdapterView.OnIte
         mOriginAirport.setOnItemClickListener(new AutoCompleteTextViewClickListener(mOriginAirport, this));
         mDestinationAirport.setOnItemClickListener(new AutoCompleteTextViewClickListener(mDestinationAirport, this));
         mSendEmail.setOnClickListener(this);
+        mCurrentDate.setOnClickListener(this);
+        mCurrentTime.setOnClickListener(this);
         populateAirportCodeSpinner();
         populateMessageTypeSpinner();
         populateDateAndTime();
@@ -122,7 +125,6 @@ public class FlightPlannerFragment extends Fragment implements AdapterView.OnIte
                 mMessageTypeSelectedValue = adapterView.getItemAtPosition(pos).toString();
                 selectDestinationEmail(pos);
                 emailSubject(pos);
-                mFlightCode.requestFocus();
                 break;
         }
     }
@@ -149,35 +151,48 @@ public class FlightPlannerFragment extends Fragment implements AdapterView.OnIte
     @Override
     public void onClick(View view) {
 
-        if (Utils.matchFlightCodePattern(mFlightCode)) {
-            if (!Utils.validateAirportCode(mOriginAirport, mDestinationAirport)) {
-                Utils.showDialog(mActivity,
-                        String.format(getResources().getString(R.string.email_template),
-                                mMessageTypeSelectedValue, mFlightCode.getText().toString().toUpperCase()
-                                , mOriginAirportValue + mCurrentTime.getText().toString(), mDestinationAirportValue
-                                , mCurrentDate.getText().toString()), new AlertDialog.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                switch (i) {
-                                    case DialogInterface.BUTTON_NEGATIVE:
-                                        dialogInterface.dismiss();
-                                        break;
-                                    case DialogInterface.BUTTON_POSITIVE:
-                                        Utils.sendEmail(getActivity(), mDestinationEmail, mSubjectEmail,
-                                                String.format(getResources().getString(R.string.email_template),
-                                                        mMessageTypeSelectedValue, mFlightCode.getText().toString().toUpperCase()
-                                                        , mOriginAirportValue + mCurrentTime.getText().toString(), mDestinationAirportValue
-                                                        , mCurrentDate.getText().toString()));
-                                        break;
-                                }
-                            }
-                        });
-            } else {
-                Snackbar.make(mFlightPlanLayout, R.string.airport_code_error_message, Snackbar.LENGTH_SHORT).show();
-            }
-        } else {
-            Snackbar.make(mFlightPlanLayout, R.string.flight_code_error_format, Snackbar.LENGTH_SHORT).show();
+        switch (view.getId()) {
+            case R.id.send_email:
+                if (Utils.matchFlightCodePattern(mFlightCode)) {
+                    if (!Utils.validateAirportCode(mOriginAirport, mDestinationAirport)) {
+                        Utils.showDialog(mActivity,
+                                String.format(getResources().getString(R.string.email_template),
+                                        mMessageTypeSelectedValue, mFlightCode.getText().toString().toUpperCase()
+                                        , mOriginAirportValue + mCurrentTime.getText().toString(), mDestinationAirportValue
+                                        , mCurrentDate.getText().toString()), new AlertDialog.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        switch (i) {
+                                            case DialogInterface.BUTTON_NEGATIVE:
+                                                dialogInterface.dismiss();
+                                                break;
+                                            case DialogInterface.BUTTON_POSITIVE:
+                                                Utils.sendEmail(getActivity(), mDestinationEmail, mSubjectEmail,
+                                                        String.format(getResources().getString(R.string.email_template),
+                                                                mMessageTypeSelectedValue, mFlightCode.getText().toString().toUpperCase()
+                                                                , mOriginAirportValue + mCurrentTime.getText().toString(), mDestinationAirportValue
+                                                                , mCurrentDate.getText().toString()));
+                                                break;
+                                        }
+                                    }
+                                });
+                    } else {
+                        Snackbar.make(mFlightPlanLayout, R.string.airport_code_error_message, Snackbar.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Snackbar.make(mFlightPlanLayout, R.string.flight_code_error_format, Snackbar.LENGTH_SHORT).show();
+                }
+
+                break;
+
+            case R.id.time:
+                Utils.setTime(mActivity, mCurrentTime);
+                break;
+            case R.id.date:
+                Utils.setDate(mActivity, mCurrentDate);
+                break;
         }
+
     }
 
     private void selectDestinationEmail(int pos) {
