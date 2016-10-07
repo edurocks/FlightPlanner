@@ -96,21 +96,14 @@
         android:layout_marginTop="5dp"
         android:textSize="15sp" />
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/RelativeLayout01"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/send_email"
             android:layout_width="209dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:maxWidth="120dp"
             android:text="@string/send_email"
             android:theme="@style/AppTheme.Button" />
-    </RelativeLayout>
 
 </LinearLayout>
