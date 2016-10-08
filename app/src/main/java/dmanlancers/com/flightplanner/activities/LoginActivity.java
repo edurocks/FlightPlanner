@@ -15,7 +15,7 @@ import io.realm.RealmResults;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private RealmManager realmManager;
+    private final RealmManager realmManager;
 
     public LoginActivity() {
         realmManager = new RealmManager();

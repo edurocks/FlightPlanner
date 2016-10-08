@@ -27,7 +27,7 @@ import dmanlancers.com.flightplanner.utils.Utils;
 import io.realm.RealmResults;
 
 public class LoginFragment extends Fragment implements View.OnClickListener {
-    private RealmManager realmManager;
+    private final RealmManager realmManager;
     private LoginActivity mActivity;
     private AppCompatEditText inputEmail, inputPassword;
     private TextInputLayout usernameWrapper, passwordWrapper;
@@ -101,7 +101,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
 
+        @SuppressWarnings("ConstantConditions")
         String user = usernameWrapper.getEditText().getText().toString().trim();
+        @SuppressWarnings("ConstantConditions")
         String password = passwordWrapper.getEditText().getText().toString().trim();
 
 

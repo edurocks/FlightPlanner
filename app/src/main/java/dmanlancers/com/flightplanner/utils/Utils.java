@@ -118,19 +118,13 @@ public class Utils {
         }
     }
 
-    public static boolean validateFlightCode(AppCompatEditText appCompatEditText) {
-        return appCompatEditText.getText().toString().isEmpty();
-    }
-
     public static boolean matchFlightCodePattern(AppCompatEditText appCompatEditText) {
         Pattern pattern = Pattern.compile("[A-Z]{3}\\d{4}");
         return pattern.matcher(appCompatEditText.getText().toString()).matches();
     }
 
     public static boolean validateAirportCode(AppCompatAutoCompleteTextView origin, AppCompatAutoCompleteTextView destination) {
-        if (origin.getText().toString().isEmpty()) {
-            return true;
-        } else return destination.getText().toString().isEmpty();
+        return origin.getText().toString().isEmpty() || destination.getText().toString().isEmpty();
     }
 
     public static boolean haveNetworkConnection(Context context) {
@@ -138,14 +132,15 @@ public class Utils {
         boolean haveConnectedMobile = false;
 
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
-        for (NetworkInfo ni : netInfo) {
-            if (ni.getTypeName().equalsIgnoreCase("WIFI"))
-                if (ni.isConnected())
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null) { // connected to the internet
+            if (netInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+                if (netInfo.isConnected())
                     haveConnectedWifi = true;
-            if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
-                if (ni.isConnected())
+            } else if (netInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
+                if (netInfo.isConnected())
                     haveConnectedMobile = true;
+            }
         }
         return haveConnectedWifi || haveConnectedMobile;
     }

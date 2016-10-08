@@ -8,7 +8,7 @@ import io.realm.RealmResults;
 
 public class RealmManager {
 
-    private Realm mRealm;
+    private final Realm mRealm;
 
     public RealmManager() {
         mRealm = Realm.getDefaultInstance();
@@ -102,10 +102,6 @@ public class RealmManager {
         mRealm.copyToRealm(login);
         mRealm.commitTransaction();
 
-    }
-
-    public Realm getRealm() {
-        return mRealm;
     }
 
     public RealmResults<AirportCode> getAllAirportCode() {

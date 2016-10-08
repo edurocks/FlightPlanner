@@ -37,7 +37,7 @@ import io.realm.RealmResults;
 
 public class FlightPlannerFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener, AdapterView.OnItemClickListener {
 
-    private RealmManager realmManager;
+    private final RealmManager realmManager;
     private AppCompatTextView mCurrentDate;
     private AppCompatTextView mCurrentTime;
     private AppCompatSpinner mMessageType;
@@ -49,7 +49,6 @@ public class FlightPlannerFragment extends Fragment implements AdapterView.OnIte
     private String mDestinationAirportValue;
     private AppCompatEditText mFlightCode;
     private String mDestinationEmail;
-    private String mDate;
     private String mSubjectEmail;
     private LinearLayout mFlightPlanLayout;
 

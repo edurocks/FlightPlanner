@@ -6,8 +6,8 @@ import android.view.View;
 import android.widget.AdapterView;
 
 public class AutoCompleteTextViewClickListener implements AdapterView.OnItemClickListener {
-    AppCompatAutoCompleteTextView mAutoComplete;
-    AdapterView.OnItemClickListener mOriginalListener;
+    private final AppCompatAutoCompleteTextView mAutoComplete;
+    private final AdapterView.OnItemClickListener mOriginalListener;
 
     public AutoCompleteTextViewClickListener(AppCompatAutoCompleteTextView acTextView,
                                              AdapterView.OnItemClickListener originalListener) {
