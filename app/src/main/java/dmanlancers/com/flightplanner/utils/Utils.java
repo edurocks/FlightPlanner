@@ -162,12 +162,12 @@ public class Utils {
         return settings.getString(key, "");
     }
 
-    public static void showDialog(Context context, String message, AlertDialog.OnClickListener listener) {
+    public static void showDialog(Context context, String title, String body, String message, String negativeMessage, String positiveMessage, AlertDialog.OnClickListener listener) {
         new AlertDialog.Builder(context)
-                .setTitle(context.getString(R.string.email_confirmation))
-                .setMessage(context.getString(R.string.body_email) + " " + message + "?")
-                .setNegativeButton(context.getString(R.string.cancel), listener)
-                .setPositiveButton(context.getString(R.string.send), listener)
+                .setTitle(title)
+                .setMessage(body + " " + message + "?")
+                .setNegativeButton(negativeMessage, listener)
+                .setPositiveButton(positiveMessage, listener)
                 .create().show();
     }
 }

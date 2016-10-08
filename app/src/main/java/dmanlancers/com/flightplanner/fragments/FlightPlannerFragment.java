@@ -155,26 +155,21 @@ public class FlightPlannerFragment extends Fragment implements AdapterView.OnIte
     @Override
     public void onClick(View view) {
 
-        if (!Utils.haveNetworkConnection(getActivity())) {
+        if (!Utils.haveNetworkConnection(mActivity)) {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
-
             alertDialog.setTitle(R.string.no_internet);
-
             alertDialog.setPositiveButton(R.string.settings,
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             startActivity(new Intent(Settings.ACTION_SETTINGS));
                         }
                     });
-
             alertDialog.setNegativeButton(R.string.exit,
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
                         }
                     });
-
-
             alertDialog.show();
 
         }
@@ -183,11 +178,12 @@ public class FlightPlannerFragment extends Fragment implements AdapterView.OnIte
             case R.id.send_email:
                 if (Utils.matchFlightCodePattern(mFlightCode)) {
                     if (!Utils.validateAirportCode(mOriginAirport, mDestinationAirport)) {
-                        Utils.showDialog(mActivity,
+                        Utils.showDialog(mActivity, mActivity.getString(R.string.email_confirmation),
+                                getString(R.string.body_email),
                                 String.format(getResources().getString(R.string.email_template),
                                         mMessageTypeSelectedValue, mFlightCode.getText().toString().toUpperCase()
                                         , mOriginAirportValue + mCurrentTime.getText().toString(), mDestinationAirportValue
-                                        , mCurrentDate.getText().toString()), new AlertDialog.OnClickListener() {
+                                        , mCurrentDate.getText().toString()), mActivity.getString(R.string.cancel), mActivity.getString(R.string.send), new AlertDialog.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         switch (i) {
