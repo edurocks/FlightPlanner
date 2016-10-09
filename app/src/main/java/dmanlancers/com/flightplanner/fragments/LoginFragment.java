@@ -1,7 +1,5 @@
 package dmanlancers.com.flightplanner.fragments;
 
-
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,7 +8,6 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,10 +35,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     public LoginFragment() {
         realmManager = new RealmManager();
-    }
-
-    private static boolean isValidEmail(String email) {
-        return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     @Override
@@ -73,7 +66,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     private boolean validateEmail() {
         String email = inputEmail.getText().toString().trim();
 
-        if (email.isEmpty() || !isValidEmail(email)) {
+        if (email.isEmpty() || !Utils.isValidEmail(email)) {
             usernameWrapper.setError(getString(R.string.err_msg_email));
             requestFocus(inputEmail);
             return false;
@@ -126,9 +119,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     bundle.putString(FirebaseAnalytics.Param.VALUE, user);
                     mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN, bundle);
 
-                    Intent i = new Intent(getActivity(), FlightPlanActivity.class);
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(i);
+                    Utils.startActivity(mActivity, FlightPlanActivity.class);
                 }
             }
         } else {

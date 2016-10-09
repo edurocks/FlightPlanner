@@ -13,6 +13,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatTextView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
@@ -164,5 +165,15 @@ public class Utils {
                 .setNegativeButton(negativeMessage, listener)
                 .setPositiveButton(positiveMessage, listener)
                 .create().show();
+    }
+
+    public static boolean isValidEmail(String email) {
+        return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    public static void startActivity(Context context, Class<?> appCompatActivity) {
+        Intent i = new Intent(context, appCompatActivity);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(i);
     }
 }
