@@ -8,13 +8,13 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.AppCompatTextView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +35,7 @@ import dmanlancers.com.flightplanner.model.MessageType;
 import dmanlancers.com.flightplanner.utils.Utils;
 import io.realm.RealmResults;
 
-public class FlightPlannerFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener, AdapterView.OnItemClickListener {
+public class FlightPlannerFragment extends BaseFragment implements AdapterView.OnItemSelectedListener, View.OnClickListener, AdapterView.OnItemClickListener {
 
     private final RealmManager realmManager;
     private AppCompatTextView mCurrentDate;
@@ -51,6 +51,7 @@ public class FlightPlannerFragment extends Fragment implements AdapterView.OnIte
     private String mDestinationEmail;
     private String mSubjectEmail;
     private LinearLayout mFlightPlanLayout;
+    private Toolbar mToolbar;
 
     public FlightPlannerFragment() {
         realmManager = new RealmManager();
@@ -74,6 +75,7 @@ public class FlightPlannerFragment extends Fragment implements AdapterView.OnIte
         mFlightCode = (AppCompatEditText) view.findViewById(R.id.flight_code);
         AppCompatButton mSendEmail = (AppCompatButton) view.findViewById(R.id.send_email);
         mFlightPlanLayout = (LinearLayout) view.findViewById(R.id.flight_plan_layout);
+        mToolbar = (Toolbar) mActivity.findViewById(R.id.toolbar);
         mMessageType.setOnItemSelectedListener(this);
         mOriginAirport.setOnItemClickListener(new AutoCompleteTextViewClickListener(mOriginAirport, this));
         mDestinationAirport.setOnItemClickListener(new AutoCompleteTextViewClickListener(mDestinationAirport, this));
@@ -83,6 +85,7 @@ public class FlightPlannerFragment extends Fragment implements AdapterView.OnIte
         populateAirportCodeSpinner();
         populateMessageTypeSpinner();
         populateDateAndTime();
+        setToolbar();
     }
 
     private void populateDateAndTime() {
@@ -255,6 +258,14 @@ public class FlightPlannerFragment extends Fragment implements AdapterView.OnIte
             case R.id.destination_airport_code:
                 mDestinationAirportValue = adapterView.getItemAtPosition(pos).toString();
                 break;
+        }
+    }
+
+    @Override
+    public void setToolbar() {
+        mActivity.setSupportActionBar(mToolbar);
+        if (mActivity.getSupportActionBar() != null) {
+            mActivity.getSupportActionBar().setTitle(R.string.flight_planner);
         }
     }
 }

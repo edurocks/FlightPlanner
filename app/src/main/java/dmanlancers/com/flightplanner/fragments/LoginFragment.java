@@ -1,13 +1,14 @@
 package dmanlancers.com.flightplanner.fragments;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,13 +26,14 @@ import dmanlancers.com.flightplanner.model.Login;
 import dmanlancers.com.flightplanner.utils.Utils;
 import io.realm.RealmResults;
 
-public class LoginFragment extends Fragment implements View.OnClickListener {
+public class LoginFragment extends BaseFragment implements View.OnClickListener {
     private final RealmManager realmManager;
     private LoginActivity mActivity;
     private AppCompatEditText inputEmail, inputPassword;
     private TextInputLayout usernameWrapper, passwordWrapper;
     private LinearLayout loginLayout;
     private FirebaseAnalytics mFirebaseAnalytics;
+    private Toolbar mToolbar;
 
     public LoginFragment() {
         realmManager = new RealmManager();
@@ -53,10 +55,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         inputEmail = (AppCompatEditText) view.findViewById(R.id.username);
         inputPassword = (AppCompatEditText) view.findViewById(R.id.password);
         loginLayout = (LinearLayout) view.findViewById(R.id.login);
+        mToolbar = (Toolbar) view.findViewById(R.id.toolbar);
         usernameWrapper.setHint(getString(R.string.hint_email));
         passwordWrapper.setHint(getString(R.string.hint_password));
         AppCompatButton mBtnlogin = (AppCompatButton) view.findViewById(R.id.btn_login);
         mBtnlogin.setOnClickListener(this);
+        setToolbar();
     }
 
     private boolean submitForm() {
@@ -119,7 +123,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     bundle.putString(FirebaseAnalytics.Param.VALUE, user);
                     mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN, bundle);
 
-                    Utils.startActivity(mActivity, FlightPlanActivity.class);
+                    Intent i = new Intent(mActivity, FlightPlanActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(i);
                 }
             }
         } else {
@@ -129,6 +135,14 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             TextView tv = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
             tv.setTextColor(Color.RED);
             snackbar.show();
+        }
+    }
+
+    @Override
+    public void setToolbar() {
+        mActivity.setSupportActionBar(mToolbar);
+        if (mActivity.getSupportActionBar() != null) {
+            mActivity.getSupportActionBar().setTitle(R.string.login);
         }
     }
 }

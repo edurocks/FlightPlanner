@@ -170,10 +170,4 @@ public class Utils {
     public static boolean isValidEmail(String email) {
         return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
-
-    public static void startActivity(Context context, Class<?> appCompatActivity) {
-        Intent i = new Intent(context, appCompatActivity);
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(i);
-    }
 }
