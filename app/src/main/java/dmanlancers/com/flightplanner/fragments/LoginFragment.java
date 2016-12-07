@@ -1,7 +1,6 @@
 package dmanlancers.com.flightplanner.fragments;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -10,11 +9,10 @@ import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -26,7 +24,7 @@ import dmanlancers.com.flightplanner.model.Login;
 import dmanlancers.com.flightplanner.utils.Utils;
 import io.realm.RealmResults;
 
-public class LoginFragment extends BaseFragment implements View.OnClickListener {
+public class LoginFragment extends BaseFragment implements View.OnClickListener, View.OnTouchListener {
     private final RealmManager realmManager;
     private LoginActivity mActivity;
     private AppCompatEditText inputEmail, inputPassword;
@@ -59,6 +57,8 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         usernameWrapper.setHint(getString(R.string.hint_email));
         passwordWrapper.setHint(getString(R.string.hint_password));
         AppCompatButton mBtnlogin = (AppCompatButton) view.findViewById(R.id.btn_login);
+        LinearLayout mLinearLayout = (LinearLayout) view.findViewById(R.id.login);
+        mLinearLayout.setOnTouchListener(this);
         mBtnlogin.setOnClickListener(this);
         setToolbar();
     }
@@ -70,33 +70,27 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
     private boolean validateEmail() {
         String email = inputEmail.getText().toString().trim();
 
-        if (email.isEmpty() || !Utils.isValidEmail(email)) {
+        if (email.isEmpty()) {
             usernameWrapper.setError(getString(R.string.err_msg_email));
-            requestFocus(inputEmail);
             return false;
-        } else {
+        } else if(!Utils.isValidEmail(email)) {
+            usernameWrapper.setError(getString(R.string.err_invalid_format_email));
+            return false;
+        }else{
             usernameWrapper.setErrorEnabled(false);
         }
-
         return true;
     }
 
     private boolean validatePassword() {
         if (inputPassword.getText().toString().trim().isEmpty()) {
             passwordWrapper.setError(getString(R.string.err_msg_password));
-            requestFocus(inputPassword);
             return false;
         } else {
             passwordWrapper.setErrorEnabled(false);
         }
 
         return true;
-    }
-
-    private void requestFocus(View view) {
-        if (view.requestFocus()) {
-            mActivity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        }
     }
 
     @Override
@@ -107,7 +101,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         @SuppressWarnings("ConstantConditions")
         String password = passwordWrapper.getEditText().getText().toString().trim();
 
-
+        Utils.hideKeyboard(mActivity);
 
         if (submitForm()) {
 
@@ -129,12 +123,8 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                 }
             }
         } else {
-            Snackbar snackbar = Snackbar
-                    .make(loginLayout, getString(R.string.msg_error_login_access), Snackbar.LENGTH_LONG);
-            View sbView = snackbar.getView();
-            TextView tv = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-            tv.setTextColor(Color.RED);
-            snackbar.show();
+
+            Snackbar.make(loginLayout, getString(R.string.msg_error_login_access), Snackbar.LENGTH_LONG).show();
         }
     }
 
@@ -144,6 +134,12 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
         if (mActivity.getSupportActionBar() != null) {
             mActivity.getSupportActionBar().setTitle(R.string.login);
         }
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        Utils.hideKeyboard(mActivity);
+        return false;
     }
 }
 

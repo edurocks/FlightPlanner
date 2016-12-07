@@ -15,9 +15,9 @@
     <string name="send_email">Send Email</string>
     <string name="send_email_chooser">Send Email</string>
     <string name="email_template" formatted="false">(%s-%s-%s-%s/%s)</string>
-    <string name="no_internet">No Internet</string>
-    <string name="settings">Settings</string>
-    <string name="exit">Exit</string>
+    <string name="no_internet">No Internet Connection</string>
+    <string name="settings">Connect</string>
+    <string name="exit">Cancel</string>
     <string name="message_delay">Delay Message</string>
     <string name="message_change">Change Message</string>
     <string name="message_request">Request Message</string>
@@ -33,4 +33,7 @@
     <string name="choose_date">Choose Date:</string>
     <string name="login">Login</string>
     <string name="flight_planner">Flight Planner</string>
+    <string name="template_prefix">dof</string>
+    <string name="no_intenet_message">To send the message you need an internet connection. Do you want to activate it</string>
+    <string name="err_invalid_format_email">Wrong Format.</string>
 </resources>

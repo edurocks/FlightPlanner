@@ -10,11 +10,14 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatTextView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
@@ -31,7 +34,7 @@ public class Utils {
     private static final String PREFS_NAME = "MyApp_Settings";
 
     public static String getCurrentDate() {
-        return new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(new Date());
+        return new SimpleDateFormat("yyMMdd", Locale.getDefault()).format(new Date());
     }
 
     public static String getCurrentTime() {
@@ -43,7 +46,7 @@ public class Utils {
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minutes = calendar.get(Calendar.MINUTE);
-        TimePickerDialog timePicker = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
+        TimePickerDialog timePicker = new TimePickerDialog(context, R.style.DialogWidgetTheme, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int hour, int minute) {
                 String formattedMinute = null;
@@ -75,7 +78,7 @@ public class Utils {
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         int month = calendar.get(Calendar.MONTH);
         int year = calendar.get(Calendar.YEAR);
-        DatePickerDialog datePicker = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
+        DatePickerDialog datePicker = new DatePickerDialog(context, R.style.DialogWidgetTheme, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 String formattedDay = null;
@@ -159,9 +162,9 @@ public class Utils {
     }
 
     public static void showDialog(Context context, String title, String body, String message, String negativeMessage, String positiveMessage, AlertDialog.OnClickListener listener) {
-        new AlertDialog.Builder(context)
+        new AlertDialog.Builder(context, R.style.DialogWidgetTheme)
                 .setTitle(title)
-                .setMessage(body + " " + message + "?")
+                .setMessage(!message.isEmpty() ? body + " " + message + "?" : "")
                 .setNegativeButton(negativeMessage, listener)
                 .setPositiveButton(positiveMessage, listener)
                 .create().show();
@@ -169,5 +172,14 @@ public class Utils {
 
     public static boolean isValidEmail(String email) {
         return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    public static void hideKeyboard(AppCompatActivity appCompatActivity){
+        View view = appCompatActivity.getCurrentFocus();
+
+        if(view != null){
+            InputMethodManager inputMethodManager = (InputMethodManager) appCompatActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 }

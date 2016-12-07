@@ -16,50 +16,51 @@ public class RealmManager {
 
     //Example Names
     public void createAirportCodeTable() {
+
         mRealm.beginTransaction();
         AirportCode airportCode = mRealm.createObject(AirportCode.class);
         airportCode.setId(1);
-        airportCode.setAirportCode("PDL");
+        airportCode.setAirportCode("LPFR");
         mRealm.copyToRealmOrUpdate(airportCode);
 
         AirportCode airportCode1 = mRealm.createObject(AirportCode.class);
         airportCode1.setId(2);
-        airportCode1.setAirportCode("PIX");
+        airportCode1.setAirportCode("LPPT");
         mRealm.copyToRealmOrUpdate(airportCode1);
 
         AirportCode airportCode2 = mRealm.createObject(AirportCode.class);
         airportCode2.setId(3);
-        airportCode2.setAirportCode("PRM");
+        airportCode2.setAirportCode("LPPR");
         mRealm.copyToRealmOrUpdate(airportCode2);
 
         AirportCode airportCode3 = mRealm.createObject(AirportCode.class);
         airportCode3.setId(4);
-        airportCode3.setAirportCode("PXO");
+        airportCode3.setAirportCode("LPMA");
         mRealm.copyToRealmOrUpdate(airportCode3);
 
         AirportCode airportCode4 = mRealm.createObject(AirportCode.class);
         airportCode4.setId(5);
-        airportCode4.setAirportCode("OPO");
+        airportCode4.setAirportCode("LPPS");
         mRealm.copyToRealmOrUpdate(airportCode4);
 
         AirportCode airportCode5 = mRealm.createObject(AirportCode.class);
         airportCode5.setId(6);
-        airportCode5.setAirportCode("LIS");
+        airportCode5.setAirportCode("LPLA");
         mRealm.copyToRealmOrUpdate(airportCode5);
 
         AirportCode airportCode6 = mRealm.createObject(AirportCode.class);
         airportCode6.setId(7);
-        airportCode6.setAirportCode("FAO");
+        airportCode6.setAirportCode("LPPD");
         mRealm.copyToRealmOrUpdate(airportCode6);
 
         AirportCode airportCode7 = mRealm.createObject(AirportCode.class);
         airportCode7.setId(8);
-        airportCode7.setAirportCode("FLW");
+        airportCode7.setAirportCode("LPSJ");
         mRealm.copyToRealmOrUpdate(airportCode7);
 
         AirportCode airportCode8 = mRealm.createObject(AirportCode.class);
         airportCode8.setId(9);
-        airportCode8.setAirportCode("FNC");
+        airportCode8.setAirportCode("LPFL");
         mRealm.copyToRealmOrUpdate(airportCode8);
         mRealm.commitTransaction();
     }

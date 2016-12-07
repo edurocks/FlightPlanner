@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -21,7 +22,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,8 +116,17 @@ public class FlightPlannerFragment extends BaseFragment implements AdapterView.O
             airportCode.add(results.get(i).getAirportCode());
         }
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(mActivity,
-                android.R.layout.simple_dropdown_item_1line, airportCode);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(mActivity,
+                android.R.layout.simple_dropdown_item_1line, android.R.id.text1, airportCode){
+
+        @NonNull
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            AppCompatTextView appCompatTextView = (AppCompatTextView) super.getView(position, convertView, parent);
+            appCompatTextView.setTextColor(Color.BLACK);
+            return appCompatTextView;
+        }
+    };
 
         mOriginAirport.setAdapter(arrayAdapter);
         mDestinationAirport.setAdapter(arrayAdapter);
@@ -158,22 +167,20 @@ public class FlightPlannerFragment extends BaseFragment implements AdapterView.O
     public void onClick(View view) {
 
         if (!Utils.haveNetworkConnection(mActivity)) {
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
-            alertDialog.setTitle(R.string.no_internet);
-            alertDialog.setPositiveButton(R.string.settings,
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            startActivity(new Intent(Settings.ACTION_SETTINGS));
-                        }
-                    });
-            alertDialog.setNegativeButton(R.string.exit,
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    });
-            alertDialog.show();
 
+            Utils.showDialog(mActivity, getString(R.string.no_internet), "", getString(R.string.no_intenet_message), getString(R.string.exit), getString(R.string.settings), new AlertDialog.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    switch (i) {
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            dialogInterface.dismiss();
+                            break;
+                        case DialogInterface.BUTTON_POSITIVE:
+                            startActivity(new Intent(Settings.ACTION_SETTINGS));
+                            break;
+                    }
+                }
+            });
         }
 
         switch (view.getId()) {
@@ -184,8 +191,8 @@ public class FlightPlannerFragment extends BaseFragment implements AdapterView.O
                                 getString(R.string.body_email),
                                 String.format(getResources().getString(R.string.email_template),
                                         mMessageTypeSelectedValue, mFlightCode.getText().toString().toUpperCase()
-                                        , mOriginAirportValue + mCurrentTime.getText().toString(), mDestinationAirportValue
-                                        , mCurrentDate.getText().toString()), mActivity.getString(R.string.cancel), mActivity.getString(R.string.send), new AlertDialog.OnClickListener() {
+                                        , mOriginAirportValue + mCurrentTime.getText().toString(), mDestinationAirportValue + "-"
+                                        + getString(R.string.template_prefix), mCurrentDate.getText().toString()), mActivity.getString(R.string.cancel), mActivity.getString(R.string.send), new AlertDialog.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         switch (i) {
@@ -196,33 +203,17 @@ public class FlightPlannerFragment extends BaseFragment implements AdapterView.O
                                                 Utils.sendEmail(getActivity(), mDestinationEmail, mSubjectEmail,
                                                         String.format(getResources().getString(R.string.email_template),
                                                                 mMessageTypeSelectedValue, mFlightCode.getText().toString().toUpperCase()
-                                                                , mOriginAirportValue + mCurrentTime.getText().toString(), mDestinationAirportValue
+                                                                , mOriginAirportValue + mCurrentTime.getText().toString(), mDestinationAirportValue + "-" + getString(R.string.template_prefix)
                                                                 , mCurrentDate.getText().toString()));
                                                 break;
                                         }
                                     }
                                 });
                     } else {
-
-
-                        Snackbar snackbar = Snackbar
-                                .make(mFlightPlanLayout, getString(R.string.airport_code_error_message), Snackbar.LENGTH_LONG);
-                        View sbView = snackbar.getView();
-                        TextView tv = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-                        tv.setTextColor(Color.RED);
-                        snackbar.show();
-
-
-
+                        Snackbar.make(mFlightPlanLayout, getString(R.string.airport_code_error_message), Snackbar.LENGTH_LONG).show();
                     }
                 } else {
-                    Snackbar snackbar = Snackbar
-                            .make(mFlightPlanLayout, getString(R.string.flight_code_error_format), Snackbar.LENGTH_LONG);
-                    View sbView = snackbar.getView();
-                    TextView tv = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-                    tv.setTextColor(Color.RED);
-                    snackbar.show();
-
+                   Snackbar.make(mFlightPlanLayout, getString(R.string.flight_code_error_format), Snackbar.LENGTH_LONG).show();
                 }
 
                 break;
